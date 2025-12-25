@@ -11,7 +11,7 @@ import { getEmbeddingProvider, needsEmbeddingApiKey } from "../../src/config.js"
 
 describe("Config API Key Validation", () => {
 	// Save original env vars
-	const originalEnv: Record<string, string | undefined> = {};
+	const originalEnv: Partial<Record<'CLAUDEMEM_MODEL' | 'OPENROUTER_API_KEY' | 'VOYAGE_API_KEY', string>> = {};
 	
 	beforeEach(() => {
 		// Save env vars
