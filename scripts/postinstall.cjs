@@ -22,5 +22,5 @@ ${BOLD}Quick Start:${RESET}
 ${BOLD}MCP Server (for Claude Code):${RESET}
   ${CYAN}claudemem --mcp${RESET}         Start as MCP server
 
-${DIM}Documentation: https://github.com/MadAppGang/claudemem${RESET}
+${DIM}Documentation: https://github.com/Bortus-AI/claudemem${RESET}
 `);

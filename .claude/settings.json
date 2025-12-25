@@ -9,7 +9,7 @@
     "mag-claude-plugins": {
       "source": {
         "source": "github",
-        "repo": "MadAppGang/claude-code"
+        "repo": "Bortus-AI/claude-code"
       }
     }
   },

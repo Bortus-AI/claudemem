@@ -1700,7 +1700,7 @@ interface FailureAnalysis {
 # LLM Code Summary Benchmark Report
 
 ## Overview
-- **Benchmark**: MadAppGang Codebase Evaluation
+- **Benchmark**: Bortus-AI Codebase Evaluation
 - **Run Date**: 2024-12-16
 - **Code Units**: 1,247 sampled from 12,450 total
 - **Languages**: TypeScript (45%), Go (35%), Python (20%)
@@ -1827,7 +1827,7 @@ summarybench compare claude-3.5-sonnet gpt-4o --detailed
 
 ```yaml
 # summarybench.yaml
-name: "MadAppGang Codebase Benchmark"
+name: "Bortus-AI Codebase Benchmark"
 
 codebase:
   root: ./
