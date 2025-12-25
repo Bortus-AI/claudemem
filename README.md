@@ -5,7 +5,7 @@
 <p align="center">
   <a href="https://www.npmjs.com/package/claude-codemem"><img src="https://img.shields.io/npm/v/claude-codemem.svg" alt="npm version"></a>
   <a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="License: MIT"></a>
-  <a href="https://github.com/MadAppGang/claudemem"><img src="https://img.shields.io/github/stars/MadAppGang/claudemem?style=social" alt="GitHub stars"></a>
+  <a href="https://github.com/Bortus-AI/claudemem"><img src="https://img.shields.io/github/stars/Bortus-AI/claudemem?style=social" alt="GitHub stars"></a>
 </p>
 
 ---
@@ -19,10 +19,10 @@ Local semantic code search for Claude Code. Index your codebase once, search it 
 npm install -g claude-codemem
 
 # homebrew (macOS)
-brew tap MadAppGang/claude-mem && brew install --cask claudemem
+brew tap Bortus-AI/claude-mem && brew install --cask claudemem
 
 # or just curl it
-curl -fsSL https://raw.githubusercontent.com/MadAppGang/claudemem/main/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/Bortus-AI/claudemem/main/install.sh | bash
 ```
 
 ## Why this exists
@@ -257,4 +257,4 @@ MIT
 
 ---
 
-[GitHub](https://github.com/MadAppGang/claudemem) · [npm](https://www.npmjs.com/package/claude-codemem) · [OpenRouter](https://openrouter.ai)
+[GitHub](https://github.com/Bortus-AI/claudemem) · [npm](https://www.npmjs.com/package/claude-codemem) · [OpenRouter](https://openrouter.ai)

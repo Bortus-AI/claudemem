@@ -1,6 +1,6 @@
 #!/bin/bash
 # claudemem installer
-# Usage: curl -fsSL https://raw.githubusercontent.com/MadAppGang/claudemem/main/install.sh | bash
+# Usage: curl -fsSL https://raw.githubusercontent.com/Bortus-AI/claudemem/main/install.sh | bash
 
 set -e
 

@@ -3237,7 +3237,7 @@ ${c.yellow}${c.bold}EXAMPLES${c.reset}
   ${c.cyan}claudemem hooks install${c.reset}                           ${c.dim}# install git hook${c.reset}
 
 ${c.yellow}${c.bold}MORE INFO${c.reset}
-  ${c.blue}https://github.com/MadAppGang/claudemem${c.reset}
+  ${c.blue}https://github.com/Bortus-AI/claudemem${c.reset}
 `);
 }
 
