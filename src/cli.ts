@@ -15,11 +15,14 @@ import {
 	getAnthropicApiKey,
 	getApiKey,
 	getEmbeddingModel,
+	getEmbeddingProvider,
 	getLLMSpec,
 	getVoyageApiKey,
 	hasApiKey,
+	hasVoyageApiKey,
 	isVectorEnabled,
 	loadGlobalConfig,
+	needsEmbeddingApiKey,
 	saveGlobalConfig,
 } from "./config.js";
 // Note: createIndexer imports store.js which loads LanceDB - made lazy to avoid startup errors
@@ -410,10 +413,16 @@ async function handleIndex(args: string[]): Promise<void> {
 	// Check if vector mode is enabled
 	const vectorEnabled = isVectorEnabled(projectPath);
 
-	// Check for API key (not needed when vector mode is disabled)
-	if (vectorEnabled && !hasApiKey()) {
-		console.error("Error: OpenRouter API key not configured.");
-		console.error("Run 'claudemem init' to set up, or set OPENROUTER_API_KEY.");
+	// Check for API key (not needed when vector mode is disabled or using local providers)
+	if (vectorEnabled && needsEmbeddingApiKey(projectPath)) {
+		const provider = getEmbeddingProvider(projectPath);
+		if (provider === "voyage") {
+			console.error("Error: Voyage AI API key not configured.");
+			console.error("Run 'claudemem init' to set up, or set VOYAGE_API_KEY.");
+		} else {
+			console.error("Error: OpenRouter API key not configured.");
+			console.error("Run 'claudemem init' to set up, or set OPENROUTER_API_KEY.");
+		}
 		process.exit(1);
 	}
 
@@ -595,10 +604,16 @@ async function handleSearch(args: string[]): Promise<void> {
 	// Check if vector mode is enabled in config
 	const vectorEnabled = isVectorEnabled(projectPath);
 
-	// Check for API key (not needed for keyword-only search or when vector mode disabled)
-	if (!keywordOnly && vectorEnabled && !hasApiKey()) {
-		console.error("Error: OpenRouter API key not configured.");
-		console.error("Run 'claudemem init' to set up, or set OPENROUTER_API_KEY.");
+	// Check for API key (not needed for keyword-only search, when vector mode disabled, or using local providers)
+	if (!keywordOnly && vectorEnabled && needsEmbeddingApiKey(projectPath)) {
+		const provider = getEmbeddingProvider(projectPath);
+		if (provider === "voyage") {
+			console.error("Error: Voyage AI API key not configured.");
+			console.error("Run 'claudemem init' to set up, or set VOYAGE_API_KEY.");
+		} else {
+			console.error("Error: OpenRouter API key not configured.");
+			console.error("Run 'claudemem init' to set up, or set OPENROUTER_API_KEY.");
+		}
 		process.exit(1);
 	}
 
@@ -1532,13 +1547,6 @@ async function handleBenchmark(args: string[]): Promise<void> {
 		orange: "\x1b[38;5;209m",
 	};
 
-	// Check for API key
-	if (!hasApiKey()) {
-		console.error("Error: OpenRouter API key not configured.");
-		console.error("Run 'claudemem init' to set up, or set OPENROUTER_API_KEY.");
-		process.exit(1);
-	}
-
 	// Parse flags
 	const useRealData = args.includes("--real");
 	const verbose = args.includes("--verbose") || args.includes("-v");
@@ -1566,6 +1574,28 @@ async function handleBenchmark(args: string[]): Promise<void> {
 			CURATED_PICKS.bestBalanced.id,  // qwen/qwen3-embedding-8b
 			"openai/text-embedding-3-small",
 		];
+	}
+
+	// Check if any of the models being tested need API keys
+	// Group models by provider to determine which API keys are needed
+	const needsVoyageKey = models.some(m => m.startsWith("voyage-"));
+	const needsOpenRouterKey = models.some(m => 
+		!m.startsWith("ollama/") && 
+		!m.startsWith("lmstudio/") && 
+		!m.startsWith("local/") && 
+		!m.startsWith("voyage-")
+	);
+
+	// Validate API keys for the models being tested
+	if (needsVoyageKey && !hasVoyageApiKey()) {
+		console.error("Error: Voyage AI API key not configured (needed for Voyage models).");
+		console.error("Run 'claudemem init' to set up, or set VOYAGE_API_KEY.");
+		process.exit(1);
+	}
+	if (needsOpenRouterKey && !hasApiKey()) {
+		console.error("Error: OpenRouter API key not configured (needed for OpenRouter models).");
+		console.error("Run 'claudemem init' to set up, or set OPENROUTER_API_KEY.");
+		process.exit(1);
 	}
 
 	const projectPath = process.cwd();

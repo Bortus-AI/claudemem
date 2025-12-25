@@ -531,6 +531,57 @@ export function hasVoyageApiKey(): boolean {
 }
 
 /**
+ * Determine the embedding provider based on model and config
+ */
+export function getEmbeddingProvider(projectPath?: string): string {
+	const model = getEmbeddingModel(projectPath);
+	
+	// Auto-detect provider from model prefix
+	if (model.startsWith("voyage-")) {
+		return "voyage";
+	}
+	if (model.startsWith("ollama/")) {
+		return "ollama";
+	}
+	if (model.startsWith("lmstudio/")) {
+		return "lmstudio";
+	}
+	if (model.startsWith("local/")) {
+		return "local";
+	}
+	
+	// Use explicit provider from config if set
+	const config = loadGlobalConfig();
+	if (config.embeddingProvider) {
+		return config.embeddingProvider;
+	}
+	
+	// Default to openrouter
+	return "openrouter";
+}
+
+/**
+ * Check if an API key is needed for the configured embedding provider
+ * Local providers (ollama, lmstudio, local) don't need API keys
+ */
+export function needsEmbeddingApiKey(projectPath?: string): boolean {
+	const provider = getEmbeddingProvider(projectPath);
+	
+	// Local providers don't need API keys
+	if (provider === "ollama" || provider === "lmstudio" || provider === "local") {
+		return false;
+	}
+	
+	// Voyage needs Voyage API key
+	if (provider === "voyage") {
+		return !hasVoyageApiKey();
+	}
+	
+	// OpenRouter needs OpenRouter API key
+	return !hasApiKey();
+}
+
+/**
  * Get embedding model from environment or config
  */
 export function getEmbeddingModel(projectPath?: string): string {
