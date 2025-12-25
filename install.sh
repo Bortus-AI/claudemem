@@ -4,7 +4,7 @@
 
 set -e
 
-REPO="MadAppGang/claudemem"
+REPO="Bortus-AI/claudemem"
 INSTALL_DIR="${CLAUDE_MEM_INSTALL_DIR:-$HOME/.local/bin}"
 
 # Colors
