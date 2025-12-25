@@ -1577,17 +1577,22 @@ async function handleBenchmark(args: string[]): Promise<void> {
 	}
 
 	// Check if any of the models being tested need API keys
-	const hasLocalModel = models.some(m => m.startsWith("ollama/") || m.startsWith("lmstudio/") || m.startsWith("local/"));
-	const hasVoyageModel = models.some(m => m.startsWith("voyage-"));
-	const hasOpenRouterModel = models.some(m => !m.startsWith("ollama/") && !m.startsWith("lmstudio/") && !m.startsWith("local/") && !m.startsWith("voyage-"));
+	// Group models by provider to determine which API keys are needed
+	const needsVoyageKey = models.some(m => m.startsWith("voyage-"));
+	const needsOpenRouterKey = models.some(m => 
+		!m.startsWith("ollama/") && 
+		!m.startsWith("lmstudio/") && 
+		!m.startsWith("local/") && 
+		!m.startsWith("voyage-")
+	);
 
 	// Validate API keys for the models being tested
-	if (hasVoyageModel && !hasVoyageApiKey()) {
+	if (needsVoyageKey && !hasVoyageApiKey()) {
 		console.error("Error: Voyage AI API key not configured (needed for Voyage models).");
 		console.error("Run 'claudemem init' to set up, or set VOYAGE_API_KEY.");
 		process.exit(1);
 	}
-	if (hasOpenRouterModel && !hasApiKey()) {
+	if (needsOpenRouterKey && !hasApiKey()) {
 		console.error("Error: OpenRouter API key not configured (needed for OpenRouter models).");
 		console.error("Run 'claudemem init' to set up, or set OPENROUTER_API_KEY.");
 		process.exit(1);

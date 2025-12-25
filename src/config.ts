@@ -534,7 +534,6 @@ export function hasVoyageApiKey(): boolean {
  * Determine the embedding provider based on model and config
  */
 export function getEmbeddingProvider(projectPath?: string): string {
-	const config = loadGlobalConfig();
 	const model = getEmbeddingModel(projectPath);
 	
 	// Auto-detect provider from model prefix
@@ -552,6 +551,7 @@ export function getEmbeddingProvider(projectPath?: string): string {
 	}
 	
 	// Use explicit provider from config if set
+	const config = loadGlobalConfig();
 	if (config.embeddingProvider) {
 		return config.embeddingProvider;
 	}
